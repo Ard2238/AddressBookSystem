@@ -32,15 +32,21 @@ public class AddressBookMain {
 		this.contacts.add(person);
 	}
 
+	public AddressBook findContact(String name) {
+		
+		AddressBook con = null;
+		for(AddressBook contact: contacts) {
+			if(contact.getFirstName().equals(name)) {
+				con = contact;
+			}
+		}
+		
+		return con;
+	}
 	
 	public void editDetails(String name) {
 		
-		AddressBook edit_con = null;
-		for(AddressBook contact: contacts) {
-			if(contact.getFirstName().equals(name)) {
-				edit_con = contact;
-			}
-		}
+		AddressBook edit_con = findContact(name);
 		
 		int choice = 1;
 		
@@ -85,6 +91,13 @@ public class AddressBookMain {
 			}
 		}
 	}
+	
+	public void deleteContact(String name) {
+		
+		AddressBook del_con = findContact(name);
+		contacts.remove(del_con);
+		
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -95,6 +108,7 @@ public class AddressBookMain {
 		while(choice != 4) {
 			System.out.println("1. Add a Contact");
 			System.out.println("2. Edit Details");
+			System.out.println("3. Delete a Contact");
 			System.out.println("4. Exit");
 			
 			choice = sc.nextInt(); sc.nextLine();
@@ -110,8 +124,11 @@ public class AddressBookMain {
 					person1.editDetails(edit_name);
 					break;
 				}
-				default: {
-					
+				case 3:{
+					System.out.println("Enter the name of the person");
+					String del_name = sc.nextLine();
+					person1.deleteContact(del_name);
+					break;
 				}
 			}
 		}
