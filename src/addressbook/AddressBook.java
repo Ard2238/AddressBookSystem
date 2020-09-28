@@ -2,10 +2,24 @@ package addressbook;
 
 public class AddressBook {
 	
+	
 	private String firstName, lastName, city, state;
 	private int zipcode, phNo;
 	private String address, email;
 	
+	
+	public AddressBook(String firstName, String lastName, String city, String state, int zipcode, int phNo,
+			String address, String email) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
+		this.phNo = phNo;
+		this.address = address;
+		this.email = email;
+	}	
 	
 	public String getFirstName() {
 		return firstName;
