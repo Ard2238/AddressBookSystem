@@ -1,12 +1,21 @@
 package addressbook;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookMain {
 	
 	static Scanner sc= new Scanner(System.in);
-	private static List<AddressBook> contacts = new ArrayList<AddressBook>();
+	private static HashSet set = new HashSet();
+	private List<AddressBook> contacts = new ArrayList<AddressBook>();
+	
+	/*
+	public List<AddressBook> createAddressBook(String name){
+		
+		AddressBookMain name = new AddressBookMain();
+	}
+	*/
 	
 	public void addContact(){
 		
@@ -115,44 +124,60 @@ public class AddressBookMain {
 		// TODO Auto-generated method stub
 		
 		System.out.println("Welcome to Address Book Program");
-		AddressBookMain person1 = new AddressBookMain();
-		int choice = 1;
+		int addbook_choice = 1;
 		
-		while(choice != 4) {
-			System.out.println("1. Add a Contact");
-			System.out.println("2. Edit Details");
-			System.out.println("3. Delete a Contact");
-			System.out.println("4. View a Contact");
-			System.out.println("5. Exit");
+		while(addbook_choice != 0) {
+			System.out.println("Do you want to add an Address Book? \n0. NO \n1. YES");
+			addbook_choice = sc.nextInt();
+			sc.nextLine();
 			
-			choice = sc.nextInt(); sc.nextLine();
-			
-			switch(choice) {
-				case 1:{
-					person1.addContact();
-					break;
-				}
-				case 2:{
-					System.out.println("Enter the name of the person");
-					String edit_name = sc.nextLine();
-					person1.editDetails(edit_name);
-					break;
-				}
-				case 3:{
-					System.out.println("Enter the name of the person");
-					String del_name = sc.nextLine();
-					person1.deleteContact(del_name);
-					break;
-				}
-				case 4:{
-					System.out.println("Enter the name of the person");
-					String view_name = sc.nextLine();
-					person1.viewContact(view_name);
+			if(addbook_choice == 1) {
+				
+				System.out.println("Added A New Address Book");
+				
+				//System.out.println("Enter the name of the Address Book");
+				//String addressbook_name = sc.nextLine();
+				AddressBookMain person1 = new AddressBookMain();
+				set.add(person1);
+				int choice = 1;
+				
+				while(choice != 5) {
+					System.out.println("1. Add a Contact");
+					System.out.println("2. Edit Details");
+					System.out.println("3. Delete a Contact");
+					System.out.println("4. View a Contact");
+					System.out.println("5. Exit");
 					
+					choice = sc.nextInt(); sc.nextLine();
+					
+					switch(choice) {
+						case 1:{
+							person1.addContact();
+							break;
+						}
+						case 2:{
+							System.out.println("Enter the name of the person");
+							String edit_name = sc.nextLine();
+							person1.editDetails(edit_name);
+							break;
+						}
+						case 3:{
+							System.out.println("Enter the name of the person");
+							String del_name = sc.nextLine();
+							person1.deleteContact(del_name);
+							break;
+						}
+						case 4:{
+							System.out.println("Enter the name of the person");
+							String view_name = sc.nextLine();
+							person1.viewContact(view_name);
+							
+						}
+					}
 				}
 			}
 		}
-
+		
+		return;
 	}
-
 }
