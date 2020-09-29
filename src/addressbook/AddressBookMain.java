@@ -98,6 +98,19 @@ public class AddressBookMain {
 		contacts.remove(del_con);
 		
 	}
+	
+	public void viewContact(String name) {
+		AddressBook view_con = findContact(name);
+		
+		System.out.println("First Name: " + view_con.getFirstName());
+		System.out.println("Last Name : " + view_con.getLastName());
+		System.out.println("Address   : " + view_con.getAddress());
+		System.out.println("City      : " + view_con.getCity());
+		System.out.println("State     : " + view_con.getState());
+		System.out.println("Zip Code  : " + view_con.getZipcode());
+		System.out.println("Phone No  : " + view_con.getPhNo());
+		System.out.println("Email     : " + view_con.getEmail());
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -109,7 +122,8 @@ public class AddressBookMain {
 			System.out.println("1. Add a Contact");
 			System.out.println("2. Edit Details");
 			System.out.println("3. Delete a Contact");
-			System.out.println("4. Exit");
+			System.out.println("4. View a Contact");
+			System.out.println("5. Exit");
 			
 			choice = sc.nextInt(); sc.nextLine();
 			
@@ -129,6 +143,12 @@ public class AddressBookMain {
 					String del_name = sc.nextLine();
 					person1.deleteContact(del_name);
 					break;
+				}
+				case 4:{
+					System.out.println("Enter the name of the person");
+					String view_name = sc.nextLine();
+					person1.viewContact(view_name);
+					
 				}
 			}
 		}
