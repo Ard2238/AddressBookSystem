@@ -1,24 +1,48 @@
 package addressbook;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookMain {
 	
 	static Scanner sc= new Scanner(System.in);
-	private static HashSet set = new HashSet();
-	private List<AddressBook> contacts = new ArrayList<AddressBook>();
+	private static HashMap<String, AddressBookMain> addressbook_map = new HashMap<String, AddressBookMain>();
+	private List<Contact> contacts = new ArrayList<Contact>();
+	private String bookName;	
 	
-	/*
-	public List<AddressBook> createAddressBook(String name){
-		
-		AddressBookMain name = new AddressBookMain();
+	public AddressBookMain(String bookName) {
+		super();
+		this.bookName = bookName;
 	}
-	*/
+
+	public Contact findContact(String fname, String lname) {		
+		Contact find_con = null;
+		for(Map.Entry entry : addressbook_map.entrySet()) {			
+			for(Contact ab : ((AddressBookMain)entry.getValue()).contacts) {
+				if(fname.equals(ab.getFirstName()) && lname.equals(ab.getLastName()))
+					find_con = ab;
+			}
+		}
+		return find_con;
+	}
 	
-	public void addContact(){
-		
+	public static List<Contact> findBook(String name){
+		List<Contact> foundBook = null;
+		for(Map.Entry<String, AddressBookMain> entry: addressbook_map.entrySet()) {
+			if(name.equals(entry.getKey()))
+				foundBook = entry.getValue().contacts;
+		}
+		if(foundBook == null)
+			System.out.println("No addressbook by the given name found.");
+		return foundBook;
+	}	
+	
+	/* UC1 -- Create a contact */
+	/* UC2 -- Add a contact */
+	/* UC7 -- Check for duplicate contact in a particular book */
+	public static void addContact(List<Contact> foundBook){	
 		System.out.println("Enter the first name of the person : ");
 		String fname = sc.nextLine();
 		System.out.println("Enter the last name of the person  : ");
@@ -36,81 +60,102 @@ public class AddressBookMain {
 		System.out.println("Enter the email of the person  : ");
 		String mail = sc.nextLine();
 		
-		AddressBook person = new AddressBook(fname,lname,city,state,zip,phno,address,mail);
+		Contact person = new Contact(fname,lname,city,state,zip,phno,address,mail);
 		
-		this.contacts.add(person);
-	}
-
-	public AddressBook findContact(String name) {
-		
-		AddressBook con = null;
-		for(AddressBook contact: contacts) {
-			if(contact.getFirstName().equals(name)) {
-				con = contact;
-			}
+		/* UC7 -- checking for duplicate contact */
+		if(!foundBook.isEmpty()) {
+			foundBook.stream().forEach(contact -> {				
+				if(person.equals(contact)){
+					System.out.println("Duplicate Contact Found.");
+					return;
+				}
+			});		
 		}
-		
-		return con;
+		foundBook.add(person);	
+		return;
 	}
 	
+	/* UC3 -- Edit any contact details */
 	public void editDetails(String name) {
-		
-		AddressBook edit_con = findContact(name);
-		
-		int choice = 1;
-		
-		while(choice != 9) {
-			System.out.println("1. Edit First Name");
-			System.out.println("2. Edit Last Name");
-			System.out.println("3. Edit Address");
-			System.out.println("4. Edit City");
-			System.out.println("5. Edit State");
-			System.out.println("6. Edit ZipCode");
-			System.out.println("7. Edit Phone No");
-			System.out.println("8. Edit Email");
-			System.out.println("9. Exit");
-			
-			choice = sc.nextInt(); sc.nextLine();
-			
-			switch(choice) {
-				case 1:{
-					edit_con.setFirstName(sc.nextLine()); break;
-				}
-				case 2:{
-					edit_con.setLastName(sc.nextLine()); break;
-				}
-				case 3:{
-					edit_con.setAddress(sc.nextLine()); break;
-				}
-				case 4:{
-					edit_con.setCity(sc.nextLine()); break;
-				}
-				case 5:{
-					edit_con.setState(sc.nextLine()); break;
-				}
-				case 6:{
-					edit_con.setZipcode(sc.nextInt()); break;
-				}
-				case 7:{
-					edit_con.setPhNo(sc.nextInt()); break;
-				}
-				case 8:{
-					edit_con.setEmail(sc.nextLine()); break;
+		List<Contact> foundBook = findBook(name);		
+		Contact edit_con = null;
+		System.out.println("Enter the name of the person");
+		String edit_name = sc.nextLine();
+		for(Contact adb : foundBook) {
+			if(edit_name.equals(adb.getFirstName()))
+				edit_con = adb;
+		}
+		if(edit_con == null) 
+			System.out.println("No contact found to edit.");
+		else {
+			int choice = 1;
+			while(choice != 9) {
+				System.out.println("1. Edit First Name");
+				System.out.println("2. Edit Last Name");
+				System.out.println("3. Edit Address");
+				System.out.println("4. Edit City");
+				System.out.println("5. Edit State");
+				System.out.println("6. Edit ZipCode");
+				System.out.println("7. Edit Phone No");
+				System.out.println("8. Edit Email");
+				System.out.println("9. Exit");
+				
+				choice = sc.nextInt(); sc.nextLine();			
+				switch(choice) {
+					case 1:{
+						edit_con.setFirstName(sc.nextLine()); break;
+					}
+					case 2:{
+						edit_con.setLastName(sc.nextLine()); break;
+					}
+					case 3:{
+						edit_con.setAddress(sc.nextLine()); break;
+					}
+					case 4:{
+						edit_con.setCity(sc.nextLine()); break;
+					}
+					case 5:{
+						edit_con.setState(sc.nextLine()); break;
+					}
+					case 6:{
+						edit_con.setZipcode(sc.nextInt()); break;
+					}
+					case 7:{
+						edit_con.setPhNo(sc.nextInt()); break;
+					}
+					case 8:{
+						edit_con.setEmail(sc.nextLine()); break;
+					}
 				}
 			}
 		}
-	}
-	
-	public void deleteContact(String name) {
-		
-		AddressBook del_con = findContact(name);
-		contacts.remove(del_con);
 		
 	}
 	
-	public void viewContact(String name) {
-		AddressBook view_con = findContact(name);
+	/* UC4 -- Delete a contact from any book */
+	public void deleteContact(String fname, String lname) {
+		Contact to_delete = null;
+		List<Contact> contact = null ;
+		for(Map.Entry entry : addressbook_map.entrySet()) {	
+			contact = ((AddressBookMain)entry.getValue()).contacts;
+			for(Contact ab : contact) {
+				if(fname.equals(ab.getFirstName()) && lname.equals(ab.getLastName()))
+					to_delete = ab;
+			}
+		}
+		if(to_delete == null)
+			System.out.println("No Such Contact Found to Delete.");
+		else
+			contact.remove(to_delete);		
+	}
+	
+	public void viewContact(String fname, String lname) {
+		Contact view_con = findContact(fname,lname);
 		
+		if(view_con == null) {
+			System.out.println("No Such Contact Found");
+			return;
+		}		
 		System.out.println("First Name: " + view_con.getFirstName());
 		System.out.println("Last Name : " + view_con.getLastName());
 		System.out.println("Address   : " + view_con.getAddress());
@@ -120,27 +165,24 @@ public class AddressBookMain {
 		System.out.println("Phone No  : " + view_con.getPhNo());
 		System.out.println("Email     : " + view_con.getEmail());
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Welcome to Address Book Program");
-		int addbook_choice = 1;
-		
+	
+
+	/* UC5 - UC6  -- Add multiple contacts and multiple address book */
+	public static void initialize() {
+		int addbook_choice = 1;	
+		/* UC6 -- Add multiple books */
 		while(addbook_choice != 0) {
 			System.out.println("Do you want to add an Address Book? \n0. NO \n1. YES");
-			addbook_choice = sc.nextInt();
-			sc.nextLine();
-			
-			if(addbook_choice == 1) {
-				
+			addbook_choice = sc.nextInt(); sc.nextLine();			
+			if(addbook_choice == 1) {				
+				System.out.println("Enter the name of the Address Book");
+				String addressbook_name = sc.nextLine();				
+				AddressBookMain person1 = new AddressBookMain(addressbook_name);
+				addressbook_map.put(addressbook_name, person1);
 				System.out.println("Added A New Address Book");
-				
-				//System.out.println("Enter the name of the Address Book");
-				//String addressbook_name = sc.nextLine();
-				AddressBookMain person1 = new AddressBookMain();
-				set.add(person1);
 				int choice = 1;
 				
+				/* UC5 -- Add multiple contacts to one book */
 				while(choice != 5) {
 					System.out.println("1. Add a Contact");
 					System.out.println("2. Edit Details");
@@ -152,32 +194,44 @@ public class AddressBookMain {
 					
 					switch(choice) {
 						case 1:{
-							person1.addContact();
+							System.out.println("Enter the name of the address book you want to add the contact to: ");
+							String name_addbook = sc.nextLine();
+							List<Contact> foundBook = findBook(name_addbook);
+							if(foundBook != null)
+								addContact(foundBook);
 							break;
 						}
 						case 2:{
-							System.out.println("Enter the name of the person");
-							String edit_name = sc.nextLine();
-							person1.editDetails(edit_name);
+							System.out.println("Enter the name of the address book you want to edit a contact from: ");
+							String name_adbook = sc.nextLine();							
+							person1.editDetails(name_adbook);
 							break;
 						}
 						case 3:{
-							System.out.println("Enter the name of the person");
-							String del_name = sc.nextLine();
-							person1.deleteContact(del_name);
+							System.out.println("Enter the first name and last name of the person you want to delete: ");
+							String del_fname = sc.nextLine();
+							String del_lname = sc.nextLine();
+							person1.deleteContact(del_fname, del_lname);
 							break;
 						}
 						case 4:{
-							System.out.println("Enter the name of the person");
-							String view_name = sc.nextLine();
-							person1.viewContact(view_name);
+							System.out.println("Enter the first name and last name of the person: ");
+							String view_fname = sc.nextLine();
+							String view_lname = sc.nextLine();
+							person1.viewContact(view_fname, view_lname);
 							
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		
+		System.out.println("Welcome to Address Book Program");
+		initialize();		
 		return;
 	}
 }

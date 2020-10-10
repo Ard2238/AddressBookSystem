@@ -1,6 +1,6 @@
 package addressbook;
 
-public class AddressBook {
+public class Contact {
 	
 	
 	private String firstName, lastName, city, state;
@@ -8,7 +8,7 @@ public class AddressBook {
 	private String address, email;
 	
 	
-	public AddressBook(String firstName, String lastName, String city, String state, int zipcode, int phNo,
+	public Contact(String firstName, String lastName, String city, String state, int zipcode, int phNo,
 			String address, String email) {
 		super();
 		this.firstName = firstName;
@@ -70,5 +70,11 @@ public class AddressBook {
 		this.email = email;
 	}
 
-	
+	@Override
+	public boolean equals(Object o) {
+		Contact contact = (Contact) o;
+		if((this.firstName.compareToIgnoreCase(contact.getFirstName()) == 0) && (this.lastName.compareToIgnoreCase(contact.getLastName()) == 0))
+			return true;
+		return false;
+	}
 }
