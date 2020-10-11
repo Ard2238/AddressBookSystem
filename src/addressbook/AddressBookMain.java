@@ -167,10 +167,12 @@ public class AddressBookMain {
 		System.out.println("Email     : " + view_con.getEmail());
 	}
 	
-	/* UC8 -- Ability to search Person in a city or state across multiple books */
-	public static List<Contact> searchPersonCityState() {
-		System.out.println("Do you wish to search by \n1. City \n2.State");
-		int choice = sc.nextInt();
+	/* UC8 -- search Person in a city or state across multiple books */
+	/* UC9 -- view person in city or state across multiple books */
+	public static void searchPersonCityState() {
+		System.out.println("Do you wish to search by \n1. City \n2. State");
+		int choice = sc.nextInt(); sc.nextLine();
+		
 		if(choice == 1)
 			System.out.println("Enter the City Name: ");
 		else
@@ -180,18 +182,18 @@ public class AddressBookMain {
 		switch(choice) {
 			case 1:	{
 				for(AddressBookMain ad : addressbook_map.values()) {
-					return ad.contacts.stream().filter(city -> city.getCity().equals(input)).collect(Collectors.toList());
+					ad.contacts.stream().filter(city -> city.getCity().equals(input)).forEach(contact -> System.out.println(contact.getFirstName() + " " + contact.getLastName()));
 				}
 				break;
 			}
 			case 2:{
 				for(AddressBookMain ad : addressbook_map.values()) {
-					return ad.contacts.stream().filter(city -> city.getState().equals(input)).collect(Collectors.toList());
+					ad.contacts.stream().filter(city -> city.getState().equals(input)).forEach(contact -> System.out.println(contact.getFirstName() + " " + contact.getLastName()));
 				}
 				break;
 			}
 		}
-		return null;	
+		
 	}
 	
 
