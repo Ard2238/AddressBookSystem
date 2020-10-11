@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
 	
@@ -166,6 +167,33 @@ public class AddressBookMain {
 		System.out.println("Email     : " + view_con.getEmail());
 	}
 	
+	/* UC8 -- Ability to search Person in a city or state across multiple books */
+	public static List<Contact> searchPersonCityState() {
+		System.out.println("Do you wish to search by \n1. City \n2.State");
+		int choice = sc.nextInt();
+		if(choice == 1)
+			System.out.println("Enter the City Name: ");
+		else
+			System.out.println("Enter the State Name:");
+		
+		String input = sc.nextLine();
+		switch(choice) {
+			case 1:	{
+				for(AddressBookMain ad : addressbook_map.values()) {
+					return ad.contacts.stream().filter(city -> city.getCity().equals(input)).collect(Collectors.toList());
+				}
+				break;
+			}
+			case 2:{
+				for(AddressBookMain ad : addressbook_map.values()) {
+					return ad.contacts.stream().filter(city -> city.getState().equals(input)).collect(Collectors.toList());
+				}
+				break;
+			}
+		}
+		return null;	
+	}
+	
 
 	/* UC5 - UC6  -- Add multiple contacts and multiple address book */
 	public static void initialize() {
@@ -183,12 +211,13 @@ public class AddressBookMain {
 				int choice = 1;
 				
 				/* UC5 -- Add multiple contacts to one book */
-				while(choice != 5) {
+				while(choice != 6) {
 					System.out.println("1. Add a Contact");
 					System.out.println("2. Edit Details");
 					System.out.println("3. Delete a Contact");
 					System.out.println("4. View a Contact");
-					System.out.println("5. Exit");
+					System.out.println("5. Search Person in a City or State");
+					System.out.println("6. Exit");
 					
 					choice = sc.nextInt(); sc.nextLine();
 					
@@ -218,8 +247,11 @@ public class AddressBookMain {
 							System.out.println("Enter the first name and last name of the person: ");
 							String view_fname = sc.nextLine();
 							String view_lname = sc.nextLine();
-							person1.viewContact(view_fname, view_lname);
-							
+							person1.viewContact(view_fname, view_lname);							
+						}
+						case 5:{
+							searchPersonCityState();
+							break;
 						}
 					}
 				}
