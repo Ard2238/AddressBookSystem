@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class AddressBookMain {
 	
@@ -176,8 +175,7 @@ public class AddressBookMain {
 		if(choice == 1)
 			System.out.println("Enter the City Name: ");
 		else
-			System.out.println("Enter the State Name:");
-		
+			System.out.println("Enter the State Name:");		
 		String input = sc.nextLine();
 		switch(choice) {
 			case 1:	{
@@ -188,12 +186,37 @@ public class AddressBookMain {
 			}
 			case 2:{
 				for(AddressBookMain ad : addressbook_map.values()) {
-					ad.contacts.stream().filter(city -> city.getState().equals(input)).forEach(contact -> System.out.println(contact.getFirstName() + " " + contact.getLastName()));
+					ad.contacts.stream().filter(state -> state.getState().equals(input)).forEach(contact -> System.out.println(contact.getFirstName() + " " + contact.getLastName()));
+				}
+				break;
+			}
+		}		
+	}
+	
+	public static long countByCityState() {
+		System.out.println("Do you wish to search by \n1. City \n2. State");
+		int choice = sc.nextInt(); sc.nextLine();
+		long count = 0;
+		if(choice == 1)
+			System.out.println("Enter the City Name: ");
+		else
+			System.out.println("Enter the State Name:");		
+		String input = sc.nextLine();
+		switch(choice) {
+			case 1:	{
+				for(AddressBookMain ad : addressbook_map.values()) {
+					count = ad.contacts.stream().filter(city -> city.getCity().equals(input)).count();
+				}
+				break;
+			}
+			case 2:{
+				for(AddressBookMain ad : addressbook_map.values()) {
+					count = ad.contacts.stream().filter(state -> state.getState().equals(input)).count();
 				}
 				break;
 			}
 		}
-		
+		return count;
 	}
 	
 
@@ -213,13 +236,14 @@ public class AddressBookMain {
 				int choice = 1;
 				
 				/* UC5 -- Add multiple contacts to one book */
-				while(choice != 6) {
+				while(choice != 7) {
 					System.out.println("1. Add a Contact");
 					System.out.println("2. Edit Details");
 					System.out.println("3. Delete a Contact");
 					System.out.println("4. View a Contact");
 					System.out.println("5. Search Person in a City or State");
-					System.out.println("6. Exit");
+					System.out.println("6. Count Person by City or State");
+					System.out.println("7. Exit");
 					
 					choice = sc.nextInt(); sc.nextLine();
 					
@@ -252,8 +276,10 @@ public class AddressBookMain {
 							person1.viewContact(view_fname, view_lname);							
 						}
 						case 5:{
-							searchPersonCityState();
-							break;
+							searchPersonCityState(); break;
+						}
+						case 6:{
+							countByCityState(); break;
 						}
 					}
 				}
