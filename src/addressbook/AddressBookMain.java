@@ -1,9 +1,11 @@
 package addressbook;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
 	
@@ -219,6 +221,23 @@ public class AddressBookMain {
 		return count;
 	}
 	
+	/* UC11 - Sort contacts in an addressbook */
+	public static void sortPersonDetails() {
+		System.out.println("Enter the addressbook you want to sort: ");
+		String adbook_name = sc.nextLine();
+		
+ 		AddressBookMain abm = null;
+		for(Map.Entry entry : addressbook_map.entrySet()) {
+			if(entry.getKey().equals(adbook_name)) {
+				abm = (AddressBookMain)entry.getValue();
+				break;
+			}
+		}
+		if(abm != null) {
+			abm.contacts.stream().sorted((c1,c2) -> c1.getFirstName().compareTo(c2.getFirstName())).forEach(contact -> System.out.println(contact.toString()));
+		}
+	}
+	
 
 	/* UC5 - UC6  -- Add multiple contacts and multiple address book */
 	public static void initialize() {
@@ -236,14 +255,15 @@ public class AddressBookMain {
 				int choice = 1;
 				
 				/* UC5 -- Add multiple contacts to one book */
-				while(choice != 7) {
+				while(choice != 8) {
 					System.out.println("1. Add a Contact");
 					System.out.println("2. Edit Details");
 					System.out.println("3. Delete a Contact");
 					System.out.println("4. View a Contact");
 					System.out.println("5. Search Person in a City or State");
 					System.out.println("6. Count Person by City or State");
-					System.out.println("7. Exit");
+					System.out.println("7. Sort Person's Details");
+					System.out.println("8. Exit");
 					
 					choice = sc.nextInt(); sc.nextLine();
 					
@@ -280,6 +300,9 @@ public class AddressBookMain {
 						}
 						case 6:{
 							countByCityState(); break;
+						}
+						case 7:{
+							sortPersonDetails(); break;
 						}
 					}
 				}

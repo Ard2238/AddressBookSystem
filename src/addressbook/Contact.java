@@ -77,4 +77,10 @@ public class Contact {
 			return true;
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return this.firstName + " " + this.lastName + " | " + this.city + " | " + this.state + " | " + this.address + " | " + this.email
+				+ " | " + this.zipcode + " | " + this.phNo;
+	}
 }
