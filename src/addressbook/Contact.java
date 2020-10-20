@@ -1,8 +1,9 @@
 package addressbook;
 
-public class Contact {
-	
-	
+import java.io.Serializable;
+
+public class Contact implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String firstName, lastName, city, state;
 	private int zipcode, phNo;
 	private String address, email;
@@ -80,7 +81,7 @@ public class Contact {
 	
 	@Override
 	public String toString() {
-		return this.firstName + " " + this.lastName + " | " + this.city + " | " + this.state + " | " + this.address + " | " + this.email
-				+ " | " + this.zipcode + " | " + this.phNo;
+		return this.firstName + " " + this.lastName + " | " + this.address + " | " + this.city + " | " + this.state + " | " + this.zipcode
+				+ " | " + this.phNo + " | " + this.email;
 	}
 }

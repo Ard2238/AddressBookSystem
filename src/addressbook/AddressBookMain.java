@@ -1,18 +1,22 @@
 package addressbook;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class AddressBookMain {
+	private List<Contact> contacts = new ArrayList<Contact>();
+	private String bookName;
 	
 	static Scanner sc= new Scanner(System.in);
-	private static HashMap<String, AddressBookMain> addressbook_map = new HashMap<String, AddressBookMain>();
-	private List<Contact> contacts = new ArrayList<Contact>();
-	private String bookName;	
+	private static HashMap<String, AddressBookMain> addressbook_map = new HashMap<String, AddressBookMain>();	
+	private static final String filepath="D:\\Target 2 (CapGemini)\\BridgeLabz Training\\DataFileIO\\AddressBookData\\data.txt";
 	
 	public AddressBookMain(String bookName) {
 		super();
@@ -221,9 +225,9 @@ public class AddressBookMain {
 		return count;
 	}
 	
-	/* UC11 - Sort contacts in an addressbook */
+	/* UC11 - Sort contacts in an address book */
 	
-	public static AddressBookMain sort() {
+	public static AddressBookMain sortBookName() {
 		System.out.println("Enter the addressbook you want to sort: ");
 		String adbook_name = sc.nextLine();
 		
@@ -237,29 +241,59 @@ public class AddressBookMain {
 		return abm;
 	}
 	public static void sortPersonDetails() {
-		AddressBookMain abm = sort();
+		AddressBookMain abm = sortBookName();
 		if(abm != null) {
 			abm.contacts.stream().sorted(Comparator.comparing(Contact::getFirstName).thenComparing(Contact::getLastName)).forEach(contact -> System.out.println(contact.toString()));
 		}
 	}
 	
-	/* UC12 - Sort contact by City, State, zipcde */
+	/* UC12 - Sort contact by City, State, ZipCode */
 	public static void sortByCity() {
-		AddressBookMain abm = sort();
+		AddressBookMain abm = sortBookName();
 		if(abm != null) {
 			abm.contacts.stream().sorted(Comparator.comparing(Contact::getCity)).forEach(contact -> System.out.println(contact.toString()));
 		}
 	}
 	public static void sortByState() {
-		AddressBookMain abm = sort();
+		AddressBookMain abm = sortBookName();
 		if(abm != null) {
 			abm.contacts.stream().sorted(Comparator.comparing(Contact::getState)).forEach(contact -> System.out.println(contact.toString()));
 		}
 	}
 	public static void sortByZipCode() {
-		AddressBookMain abm = sort();
+		AddressBookMain abm = sortBookName();
 		if(abm != null) {
 			abm.contacts.stream().sorted(Comparator.comparing(Contact::getZipcode)).forEach(contact -> System.out.println(contact.toString()));
+		}
+	}
+	
+	/* UC13 -- Write and Read data to/from a file */
+	public static void writeDataToFile() {
+		System.out.println("Enter the AddressBook Name: ");
+		String adbook_name = sc.nextLine();
+		
+		List<Contact> contactListName = findBook(adbook_name);
+		try {
+			FileOutputStream fos = new FileOutputStream(filepath);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(contactListName);
+			oos.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void readDataFromFile() {		
+		List<Contact> contactListName = null;
+		try {
+			FileInputStream fis = new FileInputStream(filepath);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			contactListName = (ArrayList<Contact>) ois.readObject();			
+//			for(Contact c: contactListName) {
+//				System.out.println(c.toString());
+//			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -280,7 +314,7 @@ public class AddressBookMain {
 				int choice = 1;
 				
 				/* UC5 -- Add multiple contacts to one book */
-				while(choice != 11) {
+				while(choice != 13) {
 					System.out.println("1. Add a Contact");
 					System.out.println("2. Edit Details");
 					System.out.println("3. Delete a Contact");
@@ -291,7 +325,9 @@ public class AddressBookMain {
 					System.out.println("8. Sort by City");
 					System.out.println("9. Sort by State");
 					System.out.println("10. Sort by ZipCode");
-					System.out.println("11. Exit");
+					System.out.println("11. Write Data to File");
+					System.out.println("12. Read Data from File");
+					System.out.println("13. Exit");
 					
 					choice = sc.nextInt(); sc.nextLine();
 					
@@ -340,6 +376,12 @@ public class AddressBookMain {
 						}
 						case 10:{
 							sortByZipCode(); break;
+						}
+						case 11:{
+							writeDataToFile(); break;
+						}
+						case 12:{
+							readDataFromFile(); break;
 						}
 					}
 				}
