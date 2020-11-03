@@ -21,4 +21,10 @@ public class AddressBookDBOTest {
     @Test
     public void check_UpdateDetailsInBookAndDB(){
     }
+
+    @Test
+    public void check_RetrieveContactWithinDateRange(){
+        List<Contact> list = dbo.retrieveContactWithinDateRange("2019-02-01","2019-10-01");
+        Assert.assertEquals(2, list.size());
+    }
 }

@@ -21,6 +21,17 @@ public class Contact implements Serializable {
     @CsvBindByPosition(position = 2)
     private String email;
     private String type;
+    private String cid;
+    private String date;
+
+    public Contact(String cid, String firstName, String lastName, String phNo, String email, String date) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phNo = phNo;
+        this.email = email;
+        this.cid = cid;
+        this.date = date;
+    }
 
     public Contact(String firstName, String lastName, String address, String city, String state, String zipcode, String phNo,
                    String email) {

@@ -66,4 +66,27 @@ public class AddressBookDBOperations {
 
 
     }
+
+    public List<Contact> retrieveContactWithinDateRange(String startDate, String endDate) {
+        List<Contact> contacts = new ArrayList<>();
+        try(Connection con = ab_dbo.getDBConnection()){
+            String query = String.format("Select * from contact where date_added between '"+ startDate + "' and '"+ endDate +"'");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                String cid = rs.getString(1);
+                String fname = rs.getString(2);
+                String lname = rs.getString(3);
+                String phone = rs.getString(4);
+                String email = rs.getString(5);
+                String date = rs.getString(6);
+
+                Contact c = new Contact(cid,fname,lname,phone,email,date);
+                contacts.add(c);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return contacts;
+    }
 }
