@@ -20,10 +20,10 @@ public class Contact implements Serializable {
     private String address;
     @CsvBindByPosition(position = 2)
     private String email;
+    private String type;
 
-
-    public Contact(String firstName, String lastName, String city, String state, String zipcode, String phNo,
-                   String address, String email) {
+    public Contact(String firstName, String lastName, String address, String city, String state, String zipcode, String phNo,
+                   String email) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,6 +33,18 @@ public class Contact implements Serializable {
         this.phNo = phNo;
         this.address = address;
         this.email = email;
+    }
+
+    public Contact(String firstName, String lastName, String address,String city, String state, String zipcode, String phNo, String email, String type) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
+        this.phNo = phNo;
+        this.address = address;
+        this.email = email;
+        this.type = type;
     }
 
     public Contact() {
