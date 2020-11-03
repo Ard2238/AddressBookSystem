@@ -50,4 +50,20 @@ public class AddressBookDBOperations {
         }
         return contactList;
     }
+
+    public void updateDetailsInDB(String firstName, String lastName, String column, String value) {
+        try(Connection con = ab_dbo.getDBConnection()){
+            String query = String.format("Update contact set " + column + " = %s where firstName = %s and lastName = %s ");
+            PreparedStatement p_stmt = con.prepareStatement(query);
+            p_stmt.setString(1,value);
+            p_stmt.setString(2,firstName);
+            p_stmt.setString(3,lastName);
+
+            int result = p_stmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+    }
 }
